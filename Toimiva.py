@@ -1,18 +1,19 @@
 import numpy
 from astropy.io import fits
 
+
 def valitse():
     luettava = input("Anna luettavan tiedoston nimi: ")
-    if luettava[-5::] != ".fits":
+    if luettava[-5::] != ".fits":   #Jos käyttäjä ei anna tiedoston päätettä niin ohjelma lisää sen
         luettava = luettava + ".fits"
-    try:
-        hdul = fits.open(luettava)
+    try:    #Ohjelma yrittää avata tiedoston, jos tiedosto ei avaudu niin ohjelma ilmoittaa ongelmasta
+        fits.open(luettava)
     except FileNotFoundError:
         print("Tiedostoa ei löytynyt.")
-        exit()
+        luettava = None
     return luettava
 
-def luo(luettava):
+def luo(luettava):  #Tämä funktio luo halutun tekstitiedoston fits tiedoston tiedoilla
     hdul = fits.open(luettava)
         
     if hdul[0].header['SIMPLE'] == True:
@@ -38,7 +39,7 @@ def luo(luettava):
         print("epäonnistui, tiedosto ei ole fits standardin mukainen.")
     return None
 
-def valikko():
+def valikko():  #Tämä funktio tulostaa ohjelman valikon ja kysyy käyttäjän valinnan
     print("Mitä haluat tehdä:")
     print("1) Valitse tiedosto")
     print("2) Luo tekstitiedosto tiedoston pohjalta")
@@ -55,9 +56,17 @@ def paaohjelma():
             break
         elif valinta == "1":
             tiedosto = valitse()
-            print(tiedosto)
+            if tiedosto != None:
+                print(tiedosto+"\n")
+            else:
+                print("")
         elif valinta == "2":
-            luo(tiedosto)
+            try:
+                luo(tiedosto)
+            except:
+                print("Tiedosto on valittava ensimmäisenä!\n")
+        else:
+            print('Virheellinen valinta\n')
     print("Kiitos ohjelman käytöstä.")
     return None
 
