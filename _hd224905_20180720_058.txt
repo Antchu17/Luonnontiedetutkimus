@@ -1,0 +1,2 @@
+star;crval;cdelt;naxis;unit
+HD 224905;6464.6970001;0.083894850000434;4587;Angstrom
